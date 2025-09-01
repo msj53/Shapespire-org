@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bangladesh SDG Research Dashboard</title>
+    <meta name="description" content="Interactive research dashboard for Blue Economy & SDG-integrated coastal development in Bangladesh">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="header-title">Bangladesh SDG Research Dashboard</h1>
+                <nav class="header-nav">
+                    <button class="nav-btn active" onclick="dashboard.switchSection('dashboard')" data-section="dashboard">Dashboard</button>
+                    <button class="nav-btn" onclick="dashboard.switchSection('tables')" data-section="tables">Tables</button>
+                    <button class="nav-btn" onclick="dashboard.switchSection('charts')" data-section="charts">Charts</button>
+                    <button class="nav-btn" onclick="dashboard.switchSection('analysis')" data-section="analysis">Analysis</button>
+                    <button class="nav-btn" onclick="dashboard.switchSection('export')" data-section="export">Export</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-content">
+                <div class="filter-section">
+                    <h3>Filters</h3>
+                    <div class="search-box">
+                        <input type="text" id="globalSearch" placeholder="Search datasets..." class="form-control">
+                    </div>
+                    <div class="filter-group">
+                        <label>Data Categories</label>
+                        <div class="filter-tags">
+                            <button class="filter-tag" onclick="dashboard.toggleFilter('socioeconomic')" data-category="socioeconomic">Socioeconomic</button>
+                            <button class="filter-tag" onclick="dashboard.toggleFilter('environment')" data-category="environment">Environment</button>
+                            <button class="filter-tag" onclick="dashboard.toggleFilter('fisheries')" data-category="fisheries">Fisheries</button>
+                            <button class="filter-tag" onclick="dashboard.toggleFilter('climate')" data-category="climate">Climate</button>
+                            <button class="filter-tag" onclick="dashboard.toggleFilter('sdg')" data-category="sdg">SDG</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quick-stats">
+                    <h4>Quick Stats</h4>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Datasets</span>
+                        <span class="stat-value">42</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Visualizations</span>
+                        <span class="stat-value">20</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">SDG Goals</span>
+                        <span class="stat-value">17</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <div class="section-header">
+                    <h2>Executive Overview</h2>
+                    <p>Key findings from Bangladesh coastal development research integrated with all 17 SDG goals</p>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="summary-cards">
+                    <div class="summary-card bg-1">
+                        <div class="card-icon">👥</div>
+                        <div class="card-content">
+                            <h3>Population Impact</h3>
+                            <div class="card-value">35,000+</div>
+                            <div class="card-subtitle">Seasonal workers affected</div>
+                            <div class="card-trend positive">+12% annually</div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card bg-2">
+                        <div class="card-icon">💰</div>
+                        <div class="card-content">
+                            <h3>Economic Value</h3>
+                            <div class="card-value">Tk 600-800M</div>
+                            <div class="card-subtitle">Annual industry value</div>
+                            <div class="card-trend positive">80% national production</div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card bg-3">
+                        <div class="card-icon">🌪️</div>
+                        <div class="card-content">
+                            <h3>Climate Risk</h3>
+                            <div class="card-value">77.33%</div>
+                            <div class="card-subtitle">Cyclone exposure rate</div>
+                            <div class="card-trend negative">Increasing with climate change</div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card bg-4">
+                        <div class="card-icon">🎯</div>
+                        <div class="card-content">
+                            <h3>SDG Integration</h3>
+                            <div class="card-value">All 17</div>
+                            <div class="card-subtitle">Goals addressed simultaneously</div>
+                            <div class="card-trend positive">First comprehensive framework</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Charts -->
+                <div class="dashboard-charts">
+                    <div class="chart-container" style="position: relative; height: 400px;">
+                        <div class="chart-header">
+                            <h3>Income Distribution by Category</h3>
+                            <button class="btn btn--sm btn--outline" onclick="dashboard.exportChart('incomeChart')">Export</button>
+                        </div>
+                        <canvas id="incomeChart" class="chart-canvas"></canvas>
+                    </div>
+                    
+                    <div class="chart-container" style="position: relative; height: 400px;">
+                        <div class="chart-header">
+                            <h3>Disaster Vulnerability Exposure</h3>
+                            <button class="btn btn--sm btn--outline" onclick="dashboard.exportChart('disasterChart')">Export</button>
+                        </div>
+                        <canvas id="disasterChart" class="chart-canvas"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tables Section -->
+            <section id="tables" class="content-section">
+                <div class="section-header">
+                    <h2>Data Tables</h2>
+                    <p>Interactive sortable and filterable datasets with export capabilities</p>
+                </div>
+
+                <div class="table-controls">
+                    <select id="tableSelector" class="form-control">
+                        <option value="income">Income Distribution</option>
+                        <option value="fishProcessing">Fish Processing Rates</option>
+                        <option value="disasters">Disaster Vulnerability</option>
+                        <option value="sdgFramework">SDG Framework</option>
+                    </select>
+                    <div class="table-actions">
+                        <button class="btn btn--sm btn--outline" onclick="dashboard.exportData('csv')">Export CSV</button>
+                        <button class="btn btn--sm btn--outline" onclick="dashboard.exportData('json')">Export JSON</button>
+                        <button class="btn btn--sm btn--outline" onclick="window.print()">Print</button>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table id="dataTable" class="data-table">
+                        <thead id="tableHead"></thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="table-pagination">
+                    <button class="btn btn--sm btn--outline" id="prevPage">Previous</button>
+                    <span id="pageInfo">Page 1 of 1</span>
+                    <button class="btn btn--sm btn--outline" id="nextPage">Next</button>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section id="charts" class="content-section">
+                <div class="section-header">
+                    <h2>Interactive Visualizations</h2>
+                    <p>Explore data through interactive charts with zoom and filtering capabilities</p>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="chart-container" style="position: relative; height: 400px;">
+                        <div class="chart-header">
+                            <h3>Fish Processing by Species</h3>
+                            <button class="btn btn--sm btn--outline" onclick="dashboard.exportChart('processingChart')">Export</button>
+                        </div>
+                        <canvas id="processingChart" class="chart-canvas"></canvas>
+                    </div>
+                    
+                    <div class="chart-container" style="position: relative; height: 400px;">
+                        <div class="chart-header">
+                            <h3>SDG Target Progress</h3>
+                            <button class="btn btn--sm btn--outline" onclick="dashboard.exportChart('sdgChart')">Export</button>
+                        </div>
+                        <canvas id="sdgChart" class="chart-canvas"></canvas>
+                    </div>
+                    
+                    <div class="chart-container full-width" style="position: relative; height: 400px;">
+                        <div class="chart-header">
+                            <h3>Economic Impact vs Climate Vulnerability</h3>
+                            <button class="btn btn--sm btn--outline" onclick="dashboard.exportChart('scatterChart')">Export</button>
+                        </div>
+                        <canvas id="scatterChart" class="chart-canvas"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analysis Section -->
+            <section id="analysis" class="content-section">
+                <div class="section-header">
+                    <h2>Interactive Analysis</h2>
+                    <p>Cross-filter data and explore relationships between different metrics</p>
+                </div>
+
+                <div class="analysis-controls">
+                    <div class="control-group">
+                        <label>Primary Dataset</label>
+                        <select id="primaryDataset" class="form-control">
+                            <option value="income">Income Distribution</option>
+                            <option value="fishProcessing">Fish Processing</option>
+                            <option value="disasters">Disaster Vulnerability</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>Secondary Dataset</label>
+                        <select id="secondaryDataset" class="form-control">
+                            <option value="disasters">Disaster Vulnerability</option>
+                            <option value="income">Income Distribution</option>
+                            <option value="fishProcessing">Fish Processing</option>
+                        </select>
+                    </div>
+                    <button class="btn btn--primary" onclick="dashboard.performAnalysis()">Analyze Relationship</button>
+                </div>
+
+                <div class="analysis-results">
+                    <div class="chart-container" style="position: relative; height: 400px;">
+                        <div class="chart-header">
+                            <h3>Cross-Analysis Results</h3>
+                            <button class="btn btn--sm btn--outline" onclick="dashboard.exportChart('analysisChart')">Export</button>
+                        </div>
+                        <canvas id="analysisChart" class="chart-canvas"></canvas>
+                    </div>
+                    
+                    <div class="insights-panel">
+                        <h4>Key Insights</h4>
+                        <div id="insightsContent">
+                            <p>Select datasets above to generate cross-analysis insights.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Export Section -->
+            <section id="export" class="content-section">
+                <div class="section-header">
+                    <h2>Export & Reports</h2>
+                    <p>Generate comprehensive reports and download datasets</p>
+                </div>
+
+                <div class="export-options">
+                    <div class="export-card">
+                        <h3>Dataset Exports</h3>
+                        <p>Download individual datasets in multiple formats</p>
+                        <div class="export-buttons">
+                            <button class="btn btn--outline" onclick="dashboard.handleExport('all-csv')">All Data (CSV)</button>
+                            <button class="btn btn--outline" onclick="dashboard.handleExport('all-json')">All Data (JSON)</button>
+                            <button class="btn btn--outline" onclick="dashboard.handleExport('summary')">Summary Report</button>
+                        </div>
+                    </div>
+                    
+                    <div class="export-card">
+                        <h3>Visual Reports</h3>
+                        <p>Generate comprehensive visual reports</p>
+                        <div class="export-buttons">
+                            <button class="btn btn--outline" onclick="dashboard.handleExport('dashboard-pdf')">Dashboard PDF</button>
+                            <button class="btn btn--outline" onclick="dashboard.handleExport('charts-pdf')">All Charts PDF</button>
+                            <button class="btn btn--primary" onclick="dashboard.handleExport('full-report')">Full Report</button>
+                        </div>
+                    </div>
+                    
+                    <div class="export-card">
+                        <h3>Custom Report Builder</h3>
+                        <p>Build custom reports with selected data</p>
+                        <div class="custom-report-builder">
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" value="summary" checked> Summary Statistics</label>
+                                <label><input type="checkbox" value="income" checked> Income Data</label>
+                                <label><input type="checkbox" value="processing"> Fish Processing</label>
+                                <label><input type="checkbox" value="disasters"> Disaster Vulnerability</label>
+                                <label><input type="checkbox" value="sdg"> SDG Framework</label>
+                            </div>
+                            <button class="btn btn--primary" onclick="dashboard.buildCustomReport()">Build Custom Report</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p>&copy; 2025 Bangladesh SDG Research Dashboard</p>
+                    <p>Blue Economy & Coastal Development Research</p>
+                </div>
+                <div class="footer-actions">
+                    <button class="btn btn--sm btn--outline" onclick="window.print()">Print Dashboard</button>
+                    <button class="btn btn--sm btn--outline" onclick="dashboard.shareReport()">Share Report</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
